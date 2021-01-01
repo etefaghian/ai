@@ -16,32 +16,34 @@ export const Ball = styled.span.attrs((props: IProps) => ({
   ${(props: IProps) =>
     props.isSelected &&
     css`
-      animation: ${blinkingBackground} 0.5s infinite;
+      animation: ${blinkingBackground} 2s infinite alternate-reverse linear;
     `}
 
   ${(props: IProps) =>
     props.kind === -1 &&
     css`
       background-color: white;
-      border: solid 0.1rem black;
+      border: solid 0.15rem black;
     `}
   ${(props: IProps) =>
     props.kind === 0 &&
     css`
       background-color: white;
       border: 0;
+      box-shadow: 0 0 0 1px #ffd59e;
     `}
 
   ${(props: IProps) =>
     props.kind === 1 &&
     css`
       background-color: black;
+      border: solid 0.15rem black;
     `}
 `;
 
 const blinkingBackground = keyframes`
     0%		{    background-color: #ffa600;}
-    100%		{    background-color: #c37a1a;}
+    100%		{    background-color: #fb5c00;}
 
 
 `;
