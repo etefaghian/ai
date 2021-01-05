@@ -54,7 +54,7 @@ export const USBoard = (props: any) => {
       sel1.row === rowIndex
     ) {
       setSel1({ col: columnIndex, row: rowIndex, isSelected: false });
-    } else if (board[rowIndex][columnIndex] === 1) {
+    } else if (board[rowIndex][columnIndex] === 1 && sel1.isSelected) {
       setSel2({ col: columnIndex, row: rowIndex, isSelected: true });
     }
   };
