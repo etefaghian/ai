@@ -4,11 +4,12 @@ import { minimax } from "../../ai/miniMax";
 import { Ball } from "./ball/Ball";
 import _ from "lodash";
 import { whoIsWin } from "../../ai/utils";
+import { Box } from "../box/Box";
 
 export const USBoard = (props: any) => {
   const [board, setBoard] = useState<number[][]>(generateBoard());
-
   const [isComputer, setIsComputer] = useState<boolean>(false);
+  const [whoWin, setWhoWin] = useState<-1 | 0 | 1>(0);
 
   const [sel1, setSel1] = useState<{
     col: number;
@@ -40,9 +41,7 @@ export const USBoard = (props: any) => {
   }, [sel2]);
 
   useEffect(() => {
-    const whoWin = whoIsWin(board, isComputer);
-    whoWin === 1 && alert("black is winner");
-    whoWin === -1 && alert("white is winner");
+    setWhoWin(whoIsWin(board, isComputer));
   }, [board]);
 
   useEffect(() => {
@@ -61,32 +60,67 @@ export const USBoard = (props: any) => {
       sel1.row === rowIndex
     ) {
       setSel1({ col: columnIndex, row: rowIndex, isSelected: false });
-    } else if (board[rowIndex][columnIndex] === 1 && sel1.isSelected) {
+    } else if (
+      board[rowIndex][columnIndex] === 1 &&
+      sel1.isSelected &&
+      Math.abs(rowIndex - sel1.row) + Math.abs(columnIndex - sel1.col) < 2
+    ) {
       setSel2({ col: columnIndex, row: rowIndex, isSelected: true });
     }
   };
 
   return (
-    <div className={props.className}>
-      {board.map((row, rowIndex) => {
-        return row.map((item, columnIndex) => {
-          return (
-            <Ball
-              isSelected={
-                sel1.isSelected &&
-                sel1.row === rowIndex &&
-                sel1.col === columnIndex
-              }
-              row={rowIndex}
-              column={columnIndex}
-              kind={item}
-              handleClick={() => handleClick(rowIndex, columnIndex)}
-              key={String(rowIndex) + String(columnIndex)}
-            ></Ball>
-          );
-        });
-      })}
-    </div>
+    <>
+      {whoWin === -1 ? (
+        <Box
+          width="19rem"
+          height="2rem"
+          color="#f87800"
+          backgroundColor="#d6d6d6"
+        >
+          White is Winner
+        </Box>
+      ) : whoWin === 1 ? (
+        <Box
+          width="19rem"
+          height="2rem"
+          color="#f87800"
+          backgroundColor="black"
+        >
+          black is Winner
+        </Box>
+      ) : (
+        <Box
+          width="19rem"
+          height="2rem"
+          color="white"
+          backgroundColor="#f87800"
+        >
+          you are white
+        </Box>
+      )}
+
+      <div className={props.className}>
+        {board.map((row, rowIndex) => {
+          return row.map((item, columnIndex) => {
+            return (
+              <Ball
+                isSelected={
+                  sel1.isSelected &&
+                  sel1.row === rowIndex &&
+                  sel1.col === columnIndex
+                }
+                row={rowIndex}
+                column={columnIndex}
+                kind={item}
+                handleClick={() => handleClick(rowIndex, columnIndex)}
+                key={String(rowIndex) + String(columnIndex)}
+              ></Ball>
+            );
+          });
+        })}
+      </div>
+    </>
   );
 };
 
