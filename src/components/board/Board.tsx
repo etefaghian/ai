@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { minimax } from "../../ai/miniMax";
 import { Ball } from "./ball/Ball";
 import _ from "lodash";
+import { whoIsWin } from "../../ai/utils";
 
 export const USBoard = (props: any) => {
   const [board, setBoard] = useState<number[][]>(generateBoard());
@@ -37,6 +38,12 @@ export const USBoard = (props: any) => {
       setBoard(b);
     }
   }, [sel2]);
+
+  useEffect(() => {
+    const whoWin = whoIsWin(board, isComputer);
+    whoWin === 1 && alert("black is winner");
+    whoWin === -1 && alert("white is winner");
+  }, [board]);
 
   useEffect(() => {
     if (isComputer) {

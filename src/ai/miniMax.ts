@@ -5,7 +5,7 @@ function _minimax(
   isBlack: boolean,
   alpha: number,
   beta: number,
-  level: number = 5
+  level: number = 4
 ): { val: number; board: number[][] } {
   level--;
   let best: number = isBlack ? -Infinity : Infinity;

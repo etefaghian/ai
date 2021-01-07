@@ -175,3 +175,41 @@ export const getBlackValue = (board: number[][]): number => {
 export const getBlackEstimate = (board: number[][]): number => {
   return getNextBoards(board, true).length;
 };
+
+/**
+ *
+ * @param board
+ * @returns
+ */
+
+export const whoIsWin = (
+  board: number[][],
+  isBlackRound: boolean
+): -1 | 0 | 1 => {
+  let numberOfNextMovesForBlack = 0;
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board[i].length; j++) {
+      if (canMoveUp(board, true, [i, j])) numberOfNextMovesForBlack++;
+      if (canMoveDown(board, true, [i, j])) numberOfNextMovesForBlack++;
+      if (canMoveLeft(board, true, [i, j])) numberOfNextMovesForBlack++;
+      if (canMoveRight(board, true, [i, j])) numberOfNextMovesForBlack++;
+    }
+  }
+  console.log("black is: ", numberOfNextMovesForBlack);
+  if (numberOfNextMovesForBlack === 0 && isBlackRound) return -1;
+
+  let numberOfNextMovesForWhite = 0;
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board[i].length; j++) {
+      if (canMoveUp(board, false, [i, j])) numberOfNextMovesForWhite++;
+      if (canMoveDown(board, false, [i, j])) numberOfNextMovesForWhite++;
+      if (canMoveLeft(board, false, [i, j])) numberOfNextMovesForWhite++;
+      if (canMoveRight(board, false, [i, j])) numberOfNextMovesForWhite++;
+    }
+  }
+  if (numberOfNextMovesForWhite === 0 && !isBlackRound) return 1;
+
+  console.log("white is: ", numberOfNextMovesForWhite);
+
+  return 0;
+};
